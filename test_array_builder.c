@@ -28,6 +28,7 @@ int main(int argc, char **argv) {
   RUN_TEST(test_push_of_struct_of_many_structs);
   RUN_TEST(test_push_of_struct_of_many_structs_aligned);
   RUN_TEST(test_push_of_struct_of_many_structs_cache_aligned);
+  summarise_results();
 }
 
 
