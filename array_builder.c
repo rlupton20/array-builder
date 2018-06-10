@@ -7,11 +7,14 @@
 #include "array_builder.h"
 
 
+/* Helper functions */
 void* allocate_new_buffer(const array_builder_t * const ab, size_t length);
 void* allocate_new_buffer_aligned(const array_builder_t * const ab, size_t length, size_t alignment);
 void* duplicate_buffer(const array_builder_t * const ab, size_t length);
 void copy_buffer(void* target, const array_builder_t *const ab);
 
+
+/* Obtain a new array builder consisting of elements of the provided size */
 array_builder_t _new_array_builder(size_t element_size) {
   return (array_builder_t) {
     .array = 0,
@@ -22,6 +25,7 @@ array_builder_t _new_array_builder(size_t element_size) {
 }
 
 
+/* Allocate a fixed size array with the same contents as the builder */
 int32_t freeze(const array_builder_t* const ab, void **dst, size_t *const size) {
   void* frozen = NULL;
 
@@ -40,6 +44,7 @@ int32_t freeze(const array_builder_t* const ab, void **dst, size_t *const size) 
   }
 }
 
+/* Allocate an aligned fixed size array with the same contents as the builder */
 int32_t freeze_aligned(const array_builder_t* const ab, void **dst, size_t *const size, size_t alignment) {
   if(!ab->members) {
     *dst = NULL;
@@ -58,11 +63,16 @@ int32_t freeze_aligned(const array_builder_t* const ab, void **dst, size_t *cons
   }
 }
 
+
+/* Allocate an L1 cache aligned fixed size array with the
+   same contents as the builder */
 int32_t freeze_cache_aligned(const array_builder_t* const ab, void **dst, size_t *const size) {
   size_t alignment = sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
   return freeze_aligned(ab, dst, size, alignment);
 }
 
+
+/* Copy an element onto the end of the builder */
 int32_t push(array_builder_t* const ab, const void *const value) {
   if (ab->members < ab->size) {
     /* Do a generic copy by using the size of the elements */
@@ -86,6 +96,8 @@ int32_t push(array_builder_t* const ab, const void *const value) {
   }
 }
 
+
+/* Empty the contents of the builder (also frees it's buffer) */
 void empty(array_builder_t* const ab) {
   if(ab->array) {
     free(ab->array);
@@ -94,6 +106,10 @@ void empty(array_builder_t* const ab) {
   ab->size = 0;
   ab->members = 0;
 }
+
+
+/* Helper function definitions */
+
 
 void* duplicate_buffer(const array_builder_t * const ab, size_t length) {
   /* Make sure we're trying to duplicate to a buffer with enough space */
