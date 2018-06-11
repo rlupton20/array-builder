@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "array_builder.h"
+#include <array_builder.h>
 
 
 /* Helper functions */

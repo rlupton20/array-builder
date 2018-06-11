@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "test.h"
-#include "array_builder.h"
+#include <array_builder.h>
 
 
 bool test_populates_correct_size_uint8(void);
