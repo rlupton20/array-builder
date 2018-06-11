@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # Run unit tests
-make clean
 make test
 
 # Check for memory leaks in the tests with valgrind
